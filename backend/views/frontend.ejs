@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoFinds - Marketplace</title>
+  <link rel="stylesheet" href="/frontend.css">
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <!-- Left: Menu button -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    
+    <!-- Center: Logo + Title + Tagline -->
+    <div class="header-center">
+      <img src="logoo.png" alt="EcoFinds Logo" class="logo">
+      <div class="title-block">
+        <h1>EcoFinds</h1>
+        <p class="tagline">Pre-loved, Re-discovered</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Side navigation menu -->
+<nav id="sideMenu" class="side-menu">
+  <a href="/frontend.html">🏠 Home</a>
+  <a href="/addProduct.html">➕ Add Product</a>
+  <a href="/myListings.html">📦 My Listings</a>
+  <a href="/cart.html">🛒 Cart</a>
+  
+  <a href="/profile/<%= user._id %>">👤 Profile</a>
+  <a href="/javascript:void(0)" onclick="toggleMenu()">❌ Close</a>
+</nav>
+
+
+
+<div class="search-container">
+  <input type="text" id="searchBar" placeholder="Search products...">
+
+  <!-- Sort dropdown -->
+  <div class="dropdown">
+    <button class="btn btn-sort">Sort</button>
+    <div class="dropdown-content">
+      <button onclick="sortProducts('asc')">Price: Low → High</button>
+      <button onclick="sortProducts('desc')">Price: High → Low</button>
+      <button onclick="sortProducts('recent')">Recently Added</button>
+    </div>
+  </div>
+
+  <!-- Filter dropdown -->
+  <div class="dropdown">
+    <button class="btn btn-filter">Filter</button>
+    <div class="dropdown-content">
+      <label>Category:</label>
+      <select id="filterCategory">
+        <option value="All">All</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothes">Clothes</option>
+        <option value="Furniture">Furniture</option>
+      </select>
+      <br><br>
+      <label>Price ≤ </label>
+      <input type="number" id="filterPrice" placeholder="Enter max price">
+      <br><br>
+      <button onclick="applyFilter()">Apply</button>
+    </div>
+  </div>
+
+  <!-- GroupBy dropdown -->
+  <div class="dropdown">
+    <button class="btn btn-group">Group By</button>
+    <div class="dropdown-content">
+      <button onclick="groupBy('none')">None</button>
+      <button onclick="groupBy('category')">Category</button>
+    </div>
+  </div>
+</div>
+
+<div class="banner">Banner Image</div>
+
+<div class="categories">
+  <button onclick="filterCategory('All')">All</button>
+  <button onclick="filterCategory('Electronics')">Electronics</button>
+  <button onclick="filterCategory('Clothes')">Clothes</button>
+  <button onclick="filterCategory('Furniture')">Furniture</button>
+</div>
+
+<div class="products" id="productList">
+  <!-- Product cards will load here -->
+</div>
+
+<button class="add-btn" onclick="addProduct()">+</button>
+
+<script src="/frontend.js"></script>
+</body>
+</html>

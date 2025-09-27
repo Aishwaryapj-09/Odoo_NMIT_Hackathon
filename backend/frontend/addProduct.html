@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product - EcoFinds</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d6a4f;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #2d6a4f;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #1b4332;
+    }
+
+    .img-preview {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .img-preview img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Add New Product</h1>
+    <form id="productForm">
+      <label>Title:</label>
+      <input type="text" id="title" required>
+
+      <label>Category:</label>
+      <select id="category" required>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothes">Clothes</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Fitness">Fitness</option>
+        <option value="Books">Books</option>
+        <option value="Health and Personal care">Health and Personal care</option>
+        <option value="Office-Equipments">Office-Equipments</option>
+      </select>
+
+      <label>Description:</label>
+      <textarea id="description" required></textarea>
+
+      <label>Price:</label>
+      <input type="number" id="price" required>
+
+      <label>Product Image:</label>
+      <input type="file" id="imageUpload" accept="image/*">
+      <div class="img-preview" id="imgPreview"></div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('productForm');
+    const imageUpload = document.getElementById('imageUpload');
+    const imgPreview = document.getElementById('imgPreview');
+
+    let uploadedImage = "";
+
+    // Show preview when user selects image
+    imageUpload.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = () => {
+          uploadedImage = reader.result;
+          imgPreview.innerHTML = `<img src="${reader.result}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Check if editing a product
+    const editData = localStorage.getItem('editProduct');
+    if(editData){
+      const product = JSON.parse(editData);
+      document.getElementById('title').value = product.title;
+      document.getElementById('category').value = product.category;
+      document.getElementById('description').value = product.description;
+      document.getElementById('price').value = product.price;
+      uploadedImage = product.img;
+      imgPreview.innerHTML = `<img src="${product.img}" alt="Preview">`;
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      let products = JSON.parse(localStorage.getItem('userProducts')) || [];
+      const id = editData ? JSON.parse(editData).id : Date.now();
+
+      const newProduct = {
+        id: id,
+        title: document.getElementById('title').value,
+        category: document.getElementById('category').value,
+        description: document.getElementById('description').value,
+        price: parseFloat(document.getElementById('price').value),
+        img: uploadedImage || 'https://via.placeholder.com/200',
+        addedAt: Date.now()
+      };
+
+      if(editData){
+        products = products.map(p => p.id === id ? newProduct : p);
+        localStorage.removeItem('editProduct');
+      } else {
+        products.push(newProduct);
+      }
+
+      localStorage.setItem('userProducts', JSON.stringify(products));
+      alert(editData ? 'Product updated!' : 'Product added!');
+      window.location.href = 'myListings.html';
+    });
+  </script>
+</body>
+</html> 
+

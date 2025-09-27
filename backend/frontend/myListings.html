@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Listings - EcoFinds</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d6a4f;
+      margin-bottom: 20px;
+    }
+
+    #myListings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      max-width: 220px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      color: #333;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+      margin: 4px 0;
+    }
+
+    .card .price {
+      font-weight: bold;
+      color: #1b4332;
+      margin-top: 6px;
+    }
+
+    .card button {
+      padding: 8px 12px;
+      margin: 6px 4px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .card button:nth-child(1) { background: #ffb703; color: #000; }
+    .card button:nth-child(2) { background: #e63946; color: #fff; }
+    .card button:nth-child(3) { background: #2d6a4f; color: #fff; }
+
+    .card button:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <h1>My Listings</h1>
+  <div id="myListings"></div>
+
+  <script>
+    function displayMyListings(){
+      const container = document.getElementById('myListings');
+      const products = JSON.parse(localStorage.getItem('userProducts')) || [];
+
+      container.innerHTML = '';
+      if(products.length === 0){
+        container.innerHTML = '<p style="text-align:center;color:#777;">No products listed yet.</p>';
+        return;
+      }
+
+      products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.title}">
+          <h3>${p.title}</h3>
+          <p class="price">₹${p.price}</p>
+          <p><strong>${p.category}</strong></p>
+          <p>${p.description}</p>
+          <button onclick="editProduct(${p.id})">Edit</button>
+          <button onclick="deleteProduct(${p.id})">Delete</button>
+          <button onclick="viewProduct(${p.id})">View</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function deleteProduct(id){
+      if(!confirm('Are you sure you want to delete this product?')) return;
+      let products = JSON.parse(localStorage.getItem('userProducts')) || [];
+      products = products.filter(p => p.id !== id);
+      localStorage.setItem('userProducts', JSON.stringify(products));
+      displayMyListings();
+    }
+
+    function editProduct(id){
+      const products = JSON.parse(localStorage.getItem('userProducts')) || [];
+      const product = products.find(p => p.id === id);
+      if(!product) return;
+      localStorage.setItem('editProduct', JSON.stringify(product));
+      window.location.href = 'addProduct.html';
+    }
+
+    function viewProduct(id){
+      localStorage.setItem('viewProductId', id);
+      window.location.href = 'productDetail.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', displayMyListings);
+  </script>
+</body>
+</html>

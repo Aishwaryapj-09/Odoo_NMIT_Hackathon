@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Google Fonts for Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* A modern reset and base styling */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            color: #333;
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        
+        form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="file"] {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus {
+            border-color: #6c63ff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            background-color: #fff;
+        }
+        
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #6c63ff;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background-color: #574fd6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        p {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #777;
+        }
+
+        a {
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #574fd6;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 500px) {
+            form {
+                padding: 2.5rem 1.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+            button {
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="/register" method="POST" enctype="multipart/form-data">
+        <h2>Register</h2>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="number">Phone Number</label>
+            <input type="text" id="number" name="number" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cpassword">Confirm Password</label>
+            <input type="password" id="cpassword" name="cpassword" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Profile Image</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+        </div>
+
+        <button type="submit">Register</button>
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </form>
+</body>
+</html>

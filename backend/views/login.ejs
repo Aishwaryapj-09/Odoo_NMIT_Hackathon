@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Full screen background image */
+            background: url('back.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .login-container {
+            width: 350px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #fff; /* white border */
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 48px; /* larger text */
+            font-weight: bold;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            /* Glowing text animation */
+            text-shadow: 
+                0 0 5px #4CAF50,
+                0 0 10px #4CAF50,
+                0 0 20px #4CAF50,
+                0 0 30px #4CAF50;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        /* Keyframes for glow animation */
+        @keyframes glow {
+            0% {
+                text-shadow: 
+                    0 0 5px #4CAF50,
+                    0 0 10px #4CAF50,
+                    0 0 20px #4CAF50,
+                    0 0 30px #4CAF50;
+            }
+            50% {
+                text-shadow: 
+                    0 0 10px #4CAF50,
+                    0 0 20px #4CAF50,
+                    0 0 30px #4CAF50,
+                    0 0 40px #4CAF50;
+            }
+            100% {
+                text-shadow: 
+                    0 0 5px #4CAF50,
+                    0 0 10px #4CAF50,
+                    0 0 20px #4CAF50,
+                    0 0 30px #4CAF50;
+            }
+        }
+
+        input {
+            width: 90%;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 18px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        button {
+            width: 90%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            margin: 20px 0 10px;
+            font-size: 18px;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h3>ECOFINDS</h3>
+        <div class="logo">
+            <img src="logoo.png" alt="Logo">
+        </div>
+        <form action="/login" method="post">
+            <input type="email" name="email1" placeholder="Email" required><br>
+            <input type="password" name="password1" placeholder="Password" required><br>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account?</p>
+        <a href="/register">Sign Up</a>
+    </div>
+</body>
+</html>

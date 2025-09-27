@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoFinds - Cart</title>
+  <style>
+    /* Basic styles for a clean layout */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .cart-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    h2 {
+      text-align: center;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 1.1em;
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    button.remove-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+    button.remove-btn:hover {
+      background-color: #c82333;
+    }
+    button.checkout-btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      background-color: #28a745;
+      color: white;
+      font-size: 1.2em;
+    }
+    button.checkout-btn:hover {
+      background-color: #218838;
+    }
+    #totalPrice {
+      font-weight: bold;
+      color: #28a745;
+    }
+    #cartItems p {
+      text-align: center;
+      font-style: italic;
+      color: #6c757d;
+    }
+    header {
+      background-color: #007BFF;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+    }
+    header .logo {
+      height: 50px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <img src="logoo.png" alt="EcoFinds Logo" class="logo">
+    <h1>EcoFinds</h1>
+  </div>
+</header>
+
+<div class="cart-container">
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <h3>Total: ₹<span id="totalPrice">0</span></h3>
+  <button class="checkout-btn" onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // Display cart items
+  function displayCart() {
+    const container = document.getElementById("cartItems");
+    container.innerHTML = "";
+
+    if(cart.length === 0) {
+      container.innerHTML = "<p>Your cart is empty.</p>";
+      document.getElementById("totalPrice").textContent = "0";
+      return;
+    }
+
+    let total = 0;
+    cart.forEach((item, index) => {
+      total += item.price;
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.innerHTML = `
+        <p><strong>${item.title}</strong> (${item.category}) - ₹${item.price}</p>
+        <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+      `;
+      container.appendChild(div);
+    });
+
+    document.getElementById("totalPrice").textContent = total;
+  }
+
+  // Remove item from cart
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    displayCart();
+  }
+
+  // Checkout (simple example)
+  function checkout() {
+    if(cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    alert(`Order placed! Total: ₹${cart.reduce((sum, item)=>sum+item.price,0)}`);
+    cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart));
+    displayCart();
+  }
+
+  // Initialize
+  document.addEventListener("DOMContentLoaded", displayCart);
+</script>
+
+</body>
+</html>

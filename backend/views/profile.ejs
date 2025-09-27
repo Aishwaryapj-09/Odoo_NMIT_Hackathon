@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .profile-container {
+      width: 90%;
+      max-width: 450px;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 30px 25px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .profile-container a {
+      display: inline-block;
+      margin-bottom: 15px;
+      text-decoration: none;
+      color: #4CAF50;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      font-size: 28px;
+      color: #333;
+    }
+
+    /* Profile Image */
+    #profile-img {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #4CAF50;
+      margin-bottom: 15px;
+      transition: transform 0.3s;
+    }
+
+    #profile-img:hover {
+      transform: scale(1.05);
+    }
+
+    #image-form input[type="file"] {
+      margin-top: 10px;
+    }
+
+    #image-form button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #image-form button:hover {
+      background-color: #45a049;
+    }
+
+    /* Fields styling */
+    .field {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 15px 0;
+      width: 100%;
+    }
+
+    .field span {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+      display: none;
+    }
+
+    .field button {
+      margin-top: 5px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .field button:hover {
+      background-color: #45a049;
+    }
+
+    .field .save-btn {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <a href="javascript:history.back()">⬅ Go Back</a>
+    <h2>User Profile</h2>
+
+    <!-- Profile Image -->
+    <p>
+      <img id="profile-img" src="/uploads/<%= user.image %>" alt="Profile Image">
+    </p>
+    <form id="image-form" action="/profile/updateImage" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="id" value="<%= user._id %>">
+      <input type="file" name="image" accept="image/*" required>
+      <button type="submit">Upload New Image</button>
+    </form>
+
+    <!-- Name -->
+    <div class="field">
+      <span>Name:</span>
+      <span id="name-display"><%= user.name %></span>
+      <input type="text" id="name-input" value="<%= user.name %>">
+      <button onclick="editField('name')">Edit</button>
+      <button onclick="saveField('name')" class="save-btn" id="save-name">Save</button>
+    </div>
+
+    <!-- Email -->
+    <div class="field">
+      <span>Email:</span>
+      <span id="email-display"><%= user.email %></span>
+      <input type="email" id="email-input" value="<%= user.email %>">
+      <button onclick="editField('email')">Edit</button>
+      <button onclick="saveField('email')" class="save-btn" id="save-email">Save</button>
+    </div>
+
+    <!-- Number -->
+    <div class="field">
+      <span>Number:</span>
+      <span id="number-display"><%= user.number %></span>
+      <input type="text" id="number-input" value="<%= user.number %>">
+      <button onclick="editField('number')">Edit</button>
+      <button onclick="saveField('number')" class="save-btn" id="save-number">Save</button>
+    </div>
+  </div>
+
+  <script>
+    function editField(field) {
+      document.getElementById(field + "-display").style.display = "none";
+      document.getElementById(field + "-input").style.display = "block";
+      document.getElementById("save-" + field).style.display = "inline-block";
+    }
+
+    async function saveField(field) {
+      let value = document.getElementById(field + "-input").value;
+      let response = await fetch("/profile/updateField", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ field, value, id: "<%= user._id %>" })
+      });
+      let result = await response.json();
+      if (result.success) {
+        document.getElementById(field + "-display").innerText = value;
+        document.getElementById(field + "-display").style.display = "inline";
+        document.getElementById(field + "-input").style.display = "none";
+        document.getElementById("save-" + field).style.display = "none";
+      } else {
+        alert("Update failed: " + result.error);
+      }
+    }
+
+    document.getElementById("image-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      let formData = new FormData(this);
+      let response = await fetch("/profile/updateImage", {
+        method: "POST",
+        body: formData
+      });
+      let result = await response.json();
+      if (result.success) {
+        document.getElementById("profile-img").src = "/uploads/" + result.filename;
+      } else {
+        alert("Image upload failed: " + result.error);
+      }
+    });
+  </script>
+</body>
+</html>
